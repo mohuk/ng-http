@@ -1,0 +1,54 @@
+{
+  "name": "ng2-http-client",
+  "version": "0.0.0",
+  "description": "Helper methods for Angular2 HTTP",
+  "main": "./lib/index.js",
+  "module": "./lib/index.js",
+  "typings": "./lib/index.d.ts",
+  "scripts": {
+    "test": "karma test",
+    "start": "webpack-dev-server --inline",
+    "prepublish": "rimraf ./lib && ngc -p ./tsconfig-build.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mohuk/ng2-http-client.git"
+  },
+  "keywords": [
+    "Angular2",
+    "HTTP"
+  ],
+  "author": "Mohammad Umair Khan <mohammad.umair.k@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mohuk/ng2-http-client/issues"
+  },
+  "homepage": "https://github.com/mohuk/ng2-http-client#readme",
+  "devDependencies": {
+    "@angular/compiler-cli": "^0.6.3",
+    "@angular/platform-browser": "^2.0.1",
+    "@angular/platform-browser-dynamic": "^2.0.1",
+    "@angular/common": "^2.0.1",
+    "@angular/compiler": "^2.0.1",
+    "@types/core-js": "^0.9.34",
+    "@types/jasmine": "^2.2.34",
+    "@types/node": "^6.0.41",
+    "angular2-template-loader": "^0.5.0",
+    "html-loader": "^0.4.4",
+    "html-webpack-plugin": "^2.22.0",
+    "rimraf": "^2.5.4",
+    "ts-loader": "^0.8.2",
+    "typescript": "^2.0.3",
+    "webpack": "^1.13.2",
+    "webpack-dev-server": "^1.16.1",
+    "webpack-merge": "^0.14.1"
+  },
+  "peerDependencies": {
+    "@angular/core": "^2.0.1",
+    "@angular/http": "^2.0.1",
+    "rxjs": "^5.0.0-beta.12",
+    "zone.js": "^0.6.25",
+    "core-js": "^2.4.1",
+    "reflect-metadata": "^0.1.8"
+  }
+}
