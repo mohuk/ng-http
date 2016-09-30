@@ -50,7 +50,7 @@ export class FooComponent {
 ```
 
 # API 
-- init(baseUrl: string): void
+- init(baseUrl?: string): void
 - get(url: string, RequestOptionsArgs?): Observable<Response>
 - put(url: string, body: string, options? :RequestOptionsArgs): Observable<Response>
 - post(url: string, body: string, options? :RequestOptionsArgs): Observable<Response>

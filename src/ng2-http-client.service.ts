@@ -15,8 +15,8 @@ export class HttpClient {
       this.afterHooks = [];
     }
 
-    init(url: string): void {
-      this.baseUrl = url;
+    init(baseUrl?: string): void {
+      this.baseUrl = baseUrl;
     }
     get(url:string, options?: RequestOptionsArgs): Observable<Response> {
         let opts: RequestOptionsArgs = this.build(RequestMethod.Get, url, options);
