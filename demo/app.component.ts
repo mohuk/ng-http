@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '../src/ng2-http-client.service';
-import { URLSearchParams } from '@angular/http';
+import { URLSearchParams, Request, Headers } from '@angular/http';
+import { DataService } from './dataservice.service';
 
 @Component({
   selector: 'app',
@@ -11,20 +11,13 @@ import { URLSearchParams } from '@angular/http';
 export class AppComponent implements OnInit {
   public countries: any;
   constructor(
-    private httpClient: HttpClient
-  ){
-    httpClient.init('http://api.geonames.org')
-  }
+    private dataservice: DataService
+  ){}
 
   ngOnInit() {
-    let params = new URLSearchParams();
-    params.set('username', 'mohuk');
-    this.httpClient.get('countryInfoJSON', {
-      search: params
-    })
-    .map(res => res.json())
-    .subscribe((res) => {
-      this.countries = res.geonames;
-    });
+    this.dataservice.countries()
+      .subscribe(res => {
+        this.countries = res;
+      });
   }
 }

@@ -1,13 +1,19 @@
-import { Injectable } from '@angular/core';
-import { Http, Headers, RequestOptions, RequestOptionsArgs, Response, Request, RequestMethod } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
+import { Injectable } from '@angular/core';
+import { BeforeHookFunction, AfterHookFunction } from './ng2-http-client.types';
+import { Http, Headers, RequestOptions, RequestOptionsArgs, Response, Request, RequestMethod } from '@angular/http';
 
 @Injectable()
 export class HttpClient {
     private baseUrl: string;
+    private beforeHooks: Array<BeforeHookFunction>;
+    private afterHooks: Array<AfterHookFunction>;
     constructor(
       private http: Http
-    ) {}
+    ) {
+      this.beforeHooks = [];
+      this.afterHooks = [];
+    }
 
     init(url: string): void {
       this.baseUrl = url;
@@ -49,7 +55,7 @@ export class HttpClient {
       }
       this.beforeRequest(req);
       return this.http.request(req)
-        .do((res: Response) => this.afterCall(req, res));
+        .do((res: Response) => this.afterCall(res));
     }
 
     private build(method: RequestMethod, url: string, options: RequestOptionsArgs, body?: string): RequestOptionsArgs {
@@ -64,14 +70,31 @@ export class HttpClient {
       return opts;
     }
 
+    addBeforeHook(func: BeforeHookFunction): void {
+      this.beforeHooks.push(func);
+    }
+
+    addAfterHook(func: AfterHookFunction): void {
+      this.afterHooks.push(func);
+    }
+
     private beforeRequest(req: Request): void {
-      //add headers and everything nice
       if(this.baseUrl) {
         req.url = `${this.baseUrl}/${req.url}`;
       }
+
+      if(this.beforeHooks.length) {
+        this.beforeHooks.forEach((hook) => {
+          hook.call(this, req);
+        })
+      }
     }
 
-    private afterCall(req: Request, res: Response): void {
-      //add json api transformation
+    private afterCall(res: Response): void {
+      if(this.afterHooks.length) {
+        this.afterHooks.forEach((hook) => {
+          hook.call(this, res);
+        })
+      }
     }
 }

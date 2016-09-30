@@ -23,7 +23,7 @@ import { Ng2HttpModule } from 'ng2-http-client';
 })
 ```
 
-### Inject `HttpClient` in your service/component
+### Inject `HttpClient` in your service/component for usage
 ```typescript
 ...
 import { Component } from '@angular/core';
@@ -38,6 +38,13 @@ export class FooComponent {
     private httpClient: HttpClient
   ){
     httpClient.init('/api');
+    httpClient.addBeforeHook((req: Request) => {
+      this.httpClient.addBeforeHook((req: Request) => {
+        let headers = new Headers();
+        headers.append('Authorization', `Bearer: Hello123456`);
+        req.headers = headers;
+      });
+    })
   }
 }
 ```
@@ -49,6 +56,8 @@ export class FooComponent {
 - post(url: string, body: string, options? :RequestOptionsArgs): Observable<Response>
 - delete(url: string, RequestOptionsArgs?): Observable<Response>
 - patch(url: string, body: string, options? :RequestOptionsArgs): Observable<Response>
+- addBeforeHook(func: BeforeHookFunction): void
+- addAfterHook(func: AfterHookFunction): void
 
 # Setup development Environment
 
