@@ -5,7 +5,7 @@ Helper methods for Angular2 HTTP
 
 ### Install `ng2-http-client`
 ```bash
-npm i ng2-http-client --S
+npm i ng2-http-client -S
 ```
 
 ### Import `Ng2HttpModule` in root `NgModule`
