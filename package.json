@@ -2,14 +2,17 @@
   "name": "ng2-http-client",
   "version": "0.1.0",
   "description": "Helper methods for Angular2 HTTP",
-  "main": "./lib/index.js",
-  "module": "./lib/index.js",
-  "typings": "./lib/index.d.ts",
+  "main": "lib/index.js",
+  "module": "lib/index.js",
+  "typings": "lib/index.d.ts",
   "scripts": {
     "test": "karma test",
     "start": "webpack-dev-server --inline",
     "prepublish": "rimraf ./lib && ngc -p ./tsconfig-build.json"
   },
+  "files": [
+    "lib"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mohuk/ng2-http-client.git"
