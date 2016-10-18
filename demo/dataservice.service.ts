@@ -10,6 +10,9 @@ export class DataService {
     private httpClient: HttpClient
   ){
     this.httpClient.init('http://api.geonames.org');
+    this.httpClient.addAfterHook((res: Response) => {
+      return res.json().geonames;
+    });
   }
 
   countries(): Observable<Response> {
@@ -17,7 +20,6 @@ export class DataService {
     params.set('username', 'mohuk');
     return this.httpClient.get('countryInfoJSON', {
       search: params
-    })
-    .map(res => res.json().geonames)
+    });
   }
 }

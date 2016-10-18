@@ -10,4 +10,4 @@ import { HttpClient } from './ng2-http-client.service';
     HttpClient
   ]
 })
-export class Ng2HttpClient {}
+export class Ng2HttpModule {}

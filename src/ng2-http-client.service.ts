@@ -55,7 +55,7 @@ export class HttpClient {
       }
       this.beforeRequest(req);
       return this.http.request(req)
-        .do((res: Response) => this.afterCall(res));
+        .map((res: Response) => this.afterCall(res));
     }
 
     private build(method: RequestMethod, url: string, options: RequestOptionsArgs, body?: string): RequestOptionsArgs {
@@ -90,11 +90,10 @@ export class HttpClient {
       }
     }
 
-    private afterCall(res: Response): void {
-      if(this.afterHooks.length) {
-        this.afterHooks.forEach((hook) => {
-          hook.call(this, res);
-        })
-      }
+    private afterCall(res: Response): any {
+      this.afterHooks.forEach((hook) => {
+        res = hook(res);
+      });
+      return res;
     }
 }
