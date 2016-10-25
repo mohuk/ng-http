@@ -1,6 +1,6 @@
 {
   "name": "ng2-http-client",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Helper methods for Angular2 HTTP",
   "main": "lib/index.js",
   "module": "lib/index.js",
