@@ -53,8 +53,9 @@ export class HttpClient {
       else {
         req = url;
       }
-      this.beforeRequest(req);
-      return this.http.request(req)
+
+      return this.beforeRequest(req)
+        .flatMap((req: Request) => this.http.request(req))
         .map((res: Response) => this.afterCall(res));
     }
 
@@ -78,15 +79,21 @@ export class HttpClient {
       this.afterHooks.push(func);
     }
 
-    private beforeRequest(req: Request): void {
+    private beforeRequest(req: Request): Observable<Request> {
       if(this.baseUrl) {
         req.url = `${this.baseUrl}/${req.url}`;
       }
 
       if(this.beforeHooks.length) {
-        this.beforeHooks.forEach((hook) => {
-          hook.call(this, req);
-        })
+        return Observable.fromPromise<Request>(
+          this.beforeHooks.reduce<any>((previousValue, currentValue) => {
+          return previousValue
+            .then((res: Request) => {
+              return currentValue(res);
+            });
+        }, Promise.resolve(req)));
+      } else {
+        return Observable.of(req);
       }
     }
 
