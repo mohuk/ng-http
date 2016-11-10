@@ -37,7 +37,7 @@ export class FooComponent {
   constructor(
     private httpClient: HttpClient
   ){
-    httpClient.init('/api');
+    this.httpClient.init('/api');
     this.httpClient.addBeforeHook((req: Request) => {
       let headers = new Headers();
       headers.append('Authorization', `Bearer: Hello123456`);
