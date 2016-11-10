@@ -38,13 +38,12 @@ export class FooComponent {
     private httpClient: HttpClient
   ){
     httpClient.init('/api');
-    httpClient.addBeforeHook((req: Request) => {
-      this.httpClient.addBeforeHook((req: Request) => {
-        let headers = new Headers();
-        headers.append('Authorization', `Bearer: Hello123456`);
-        req.headers = headers;
-      });
-    })
+    this.httpClient.addBeforeHook((req: Request) => {
+      let headers = new Headers();
+      headers.append('Authorization', `Bearer: Hello123456`);
+      req.headers = headers;
+      return req;
+    });
   }
 }
 ```
