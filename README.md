@@ -1,24 +1,45 @@
-# ng2-http-client
+# ng-http
 Helper methods for Angular2 HTTP
 
 # Usage
 
-### Install `ng2-http-client`
+### Install `ng-http`
 ```bash
-npm i ng2-http-client -S
+npm i ng-http -S
 ```
 
-### Import `Ng2HttpModule` in root `NgModule`
+### Define configuration as `NgHttpConfig`
+```typescript
+import { NgHttpConfig } from 'ng-http';
+import { Response, Request } from '@angular/http';
+
+export const ngHttpConfig: NgHttpConfig = {
+  baseUrl: 'http://api.geonames.org',
+  afterHook: (res: Response) => {
+    return res.json().geonames;
+  },
+  beforeHook: (req: Request) => {
+    //just logging
+    console.log(req);
+    return req;
+  }
+}
+```
+
+### Import `NgHttpModule` in root `NgModule`
 
 ```typescript
 ...
 import { NgModule } from '@angular/core';
-import { Ng2HttpModule } from 'ng2-http-client';
+import { NgHttpModule } from 'ng-http';
+import { ngHttpConfig } from './http.config';
 ...
 
 @NgModule({
   ...
-  imports: [Ng2HttpModule]
+  imports: [
+    NgHttpModule.forRoot(ngHttpConfig)
+  ]
   ...
 })
 ```
@@ -27,7 +48,7 @@ import { Ng2HttpModule } from 'ng2-http-client';
 ```typescript
 ...
 import { Component } from '@angular/core';
-import { HttpClient } from 'ng2-http-client';
+import { HttpClient } from 'ng-http';
 ...
 
 @Component({
@@ -36,20 +57,17 @@ import { HttpClient } from 'ng2-http-client';
 export class FooComponent {
   constructor(
     private httpClient: HttpClient
-  ){
-    this.httpClient.init('/api');
-    this.httpClient.addBeforeHook((req: Request) => {
-      let headers = new Headers();
-      headers.append('Authorization', `Bearer: Hello123456`);
-      req.headers = headers;
-      return req;
-    });
-  }
+  ){}
 }
 ```
 
+# Config Interface
+- baseUrl: string
+- beforeHook: BeforeHookFunction
+- afterHook: AfterHookFunction
+
 # API 
-- init(baseUrl?: string): void
+- init(baseUrl?: string): void // will soon be deprecated
 - get(url: string, RequestOptionsArgs?): Observable<Response>
 - put(url: string, body: string, options? :RequestOptionsArgs): Observable<Response>
 - post(url: string, body: string, options? :RequestOptionsArgs): Observable<Response>

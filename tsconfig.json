@@ -14,5 +14,8 @@
       "node",
       "core-js"
     ]
-  }
+  },
+  "files": [
+    "./index.ts"
+  ]
 }

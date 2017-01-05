@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs/Rx';
-import { Injectable } from '@angular/core';
-import { BeforeHookFunction, AfterHookFunction } from './ng2-http-client.types';
+import { Inject, Injectable } from '@angular/core';
+import { NgHttpConfig, BeforeHookFunction, AfterHookFunction } from './http-client.config';
 import { Http, Headers, RequestOptions, RequestOptionsArgs, Response, Request, RequestMethod } from '@angular/http';
 
 @Injectable()
@@ -9,10 +9,12 @@ export class HttpClient {
     private beforeHooks: Array<BeforeHookFunction>;
     private afterHooks: Array<AfterHookFunction>;
     constructor(
-      private http: Http
+      private http: Http,
+      @Inject('ngHttpConfig') private ngHttpConfig: NgHttpConfig
     ) {
-      this.beforeHooks = [];
-      this.afterHooks = [];
+      this.beforeHooks = ngHttpConfig.beforeHook ? [ngHttpConfig.beforeHook] : [];
+      this.afterHooks = ngHttpConfig.afterHook? [ngHttpConfig.afterHook] : [];
+      this.baseUrl = ngHttpConfig.baseUrl;
     }
 
     init(baseUrl?: string): void {

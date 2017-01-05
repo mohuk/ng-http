@@ -1,2 +1,3 @@
-export * from './src/ng2-http-client.service';
-export * from './src/ng2-http-client.module';
+export * from './src/http-client.service';
+export * from './src/http-client.module';
+export * from './src/http-client.config';
