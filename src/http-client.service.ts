@@ -7,6 +7,7 @@ import { Http, Headers, RequestOptions, RequestOptionsArgs, Response, Request, R
 export class HttpClient {
     private baseUrl: string;
     private beforeHooks: Array<BeforeHookFunction>;
+    private errorHooks: Array<AfterHookFunction>;
     private afterHooks: Array<AfterHookFunction>;
     constructor(
       private http: Http,
@@ -14,6 +15,7 @@ export class HttpClient {
     ) {
       this.beforeHooks = ngHttpConfig.beforeHook ? [ngHttpConfig.beforeHook] : [];
       this.afterHooks = ngHttpConfig.afterHook? [ngHttpConfig.afterHook] : [];
+      this.errorHooks = ngHttpConfig.errorHook? [ngHttpConfig.errorHook] : [];
       this.baseUrl = ngHttpConfig.baseUrl;
     }
 
@@ -58,7 +60,11 @@ export class HttpClient {
 
       return this.beforeRequest(req)
         .flatMap((req: Request) => this.http.request(req))
-        .map((res: Response) => this.afterCall(res));
+        .map((res: Response) => this.afterCall(res))
+        .catch(error => {
+          this.errorHandler(error);
+          return Observable.throw(new Error(error.status))
+        });
     }
 
     private build(method: RequestMethod, url: string, options: RequestOptionsArgs, body?: string): RequestOptionsArgs {
@@ -103,6 +109,16 @@ export class HttpClient {
       this.afterHooks.forEach((hook) => {
         res = hook(res);
       });
+      return res;
+    }
+
+    private errorHandler(res: Response): any {
+      if(this.errorHooks.length) {
+        this.errorHooks.forEach(hook => {
+          res = hook(res);
+        });
+        return res;
+      }
       return res;
     }
 }

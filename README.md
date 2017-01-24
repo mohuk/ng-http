@@ -10,20 +10,31 @@ npm i ng-http -S
 
 ### Define configuration as `NgHttpConfig`
 ```typescript
-import { NgHttpConfig } from 'ng-http';
+import { NgHttpConfig, AfterHookFunction, BeforeHookFunction } from 'ng-http';
 import { Response, Request } from '@angular/http';
 
-export const ngHttpConfig: NgHttpConfig = {
-  baseUrl: 'http://api.geonames.org',
-  afterHook: (res: Response) => {
-    return res.json().geonames;
-  },
-  beforeHook: (req: Request) => {
-    //just logging
-    console.log(req);
-    return req;
+export class NgHttpConfigDetail implements NgHttpConfig  {
+  baseUrl: string;
+  afterHook: AfterHookFunction;
+  errorHook: AfterHookFunction;
+  beforeHook: BeforeHookFunction;
+
+  constructor() {
+    this.baseUrl = 'http://api.geonames.org';
+    this.afterHook = (res: Response) => {
+      return res.json().geonames;
+    };
+    this.beforeHook = (req: Request) => {
+      //just logging
+      console.log(req);
+      return req;
+    }
+    this.errorHook = (req: Request) => {
+      return console.log('Error Occurred')
+    };
   }
 }
+
 ```
 
 ### Import `NgHttpModule` in root `NgModule`
@@ -38,8 +49,15 @@ import { ngHttpConfig } from './http.config';
 @NgModule({
   ...
   imports: [
-    NgHttpModule.forRoot(ngHttpConfig)
-  ]
+    NgHttpModule
+  ],
+  ...
+  providers: [
+      {
+        provide: 'ngHttpConfig',
+        useClass: NgHttpConfigDetail
+      }
+    ]
   ...
 })
 ```
@@ -65,16 +83,14 @@ export class FooComponent {
 - baseUrl: string
 - beforeHook: BeforeHookFunction
 - afterHook: AfterHookFunction
+- errorHook: AfterHookFunction
 
 # API 
-- init(baseUrl?: string): void // will soon be deprecated
 - get(url: string, RequestOptionsArgs?): Observable<Response>
 - put(url: string, body: string, options? :RequestOptionsArgs): Observable<Response>
 - post(url: string, body: string, options? :RequestOptionsArgs): Observable<Response>
 - delete(url: string, RequestOptionsArgs?): Observable<Response>
 - patch(url: string, body: string, options? :RequestOptionsArgs): Observable<Response>
-- addBeforeHook(func: BeforeHookFunction): void
-- addAfterHook(func: AfterHookFunction): void
 
 # Setup development Environment
 
