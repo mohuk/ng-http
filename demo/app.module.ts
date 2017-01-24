@@ -1,14 +1,15 @@
 import { NgModule } from '@angular/core';
+import { HttpModule } from '@angular/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent }   from './app.component';
-import { NgHttpModule } from '../src/http-client.module';
 import { DataService } from './dataservice.service';
-import { ngHttpConfig } from './http.config';
+import { NgHttpConfigDetail } from '../config/ngHttpConfig';
+import { HttpClient } from '../src/http-client.service';
 
 @NgModule({
   imports: [
     BrowserModule,
-    NgHttpModule.forRoot(ngHttpConfig)
+    HttpModule
   ],
   declarations: [
     AppComponent
@@ -17,7 +18,12 @@ import { ngHttpConfig } from './http.config';
     AppComponent
   ],
   providers: [
-    DataService
+    HttpClient,
+    DataService,
+    {
+      provide: 'ngHttpConfig',
+      useClass: NgHttpConfigDetail
+    }
   ]
 })
 export class AppModule { }

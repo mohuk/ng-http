@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { URLSearchParams, Request, Headers } from '@angular/http';
 import { DataService } from './dataservice.service';
 
 @Component({
