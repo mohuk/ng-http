@@ -1,6 +1,6 @@
 {
   "name": "ng-http",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "Helper methods for Angular2 HTTP",
   "main": "lib/index.js",
   "module": "lib/index.js",
