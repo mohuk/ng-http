@@ -63,7 +63,7 @@ export class HttpClient {
         .map((res: Response) => this.afterCall(res))
         .catch(error => {
           this.errorHandler(error);
-          return Observable.throw(new Error(error.status))
+          return Observable.throw(error.json())
         });
     }
 
