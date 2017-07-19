@@ -1,3 +1,7 @@
+# Deprecated
+
+This package is deprecated in favor of the `HttpInterceptor` interface. For more information visit [here](https://angular.io/guide/http#intercepting-all-requests-or-responses).
+
 # ng-http
 Helper methods for Angular2 HTTP
 
